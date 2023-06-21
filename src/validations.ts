@@ -118,10 +118,9 @@ export class ValidationDTO {
   };
 
   isValidISODate = (validationFiled: string[]) => {
+    const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
     for (const key of validationFiled) {
-      let date = new Date(this.inputObj[key]);
-
-      if (!(date instanceof Date && !isNaN(date.getTime()))) {
+      if (!isoDateRegex.test(this.inputObj[key])) {
         this.errorStage.errorsMessages.push({
           message: "the field is incorrect type",
           field: key,
@@ -131,16 +130,4 @@ export class ValidationDTO {
     }
     return this;
   };
-
-  // for (const key of validationFiled) {
-  //   const isNull = this.inputObj[key] === null;
-  //   const typeChecks = isNull ? (mayBeNull ? false : true) : typeof this.inputObj[key] !== typeCheck;
-
-  //   if (!(key in this.errorStage.checkKeys) && key in this.inputObj && typeChecks) {
-  //     this.errorStage.errorsMessages.push({
-  //       message: "the field is incorrect type",
-  //       field: key,
-  //     });
-  //     this.errorStage.checkKeys.push(key);
-  //   }
 }

@@ -19,8 +19,10 @@ class DataBase {
         return data[0];
     }
     replace(inputVideo) {
-        let data = this.db.filter((video) => video.id === inputVideo.id);
-        data[0] = inputVideo;
+        let index = this.db.findIndex((video) => video.id === inputVideo.id);
+        if (index !== -1) {
+            this.db[index] = inputVideo;
+        }
     }
     getAll() {
         return this.db;

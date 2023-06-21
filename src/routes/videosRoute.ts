@@ -57,7 +57,7 @@ videosRoute.post("/", (req: RequestBody<CreateVideoDto>, res: Response) => {
     id: Date.now(),
     title: req.body.title,
     author: req.body.author,
-    canBeDownloaded: true,
+    canBeDownloaded: false,
     minAgeRestriction: null,
     createdAt: currentDateString,
     publicationDate: nextDay,

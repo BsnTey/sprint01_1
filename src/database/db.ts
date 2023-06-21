@@ -25,8 +25,11 @@ export class DataBase {
   }
 
   replace(inputVideo: createItemDB) {
-    let data = this.db.filter((video) => video.id === inputVideo.id);
-    data[0] = inputVideo;
+    let index = this.db.findIndex((video) => video.id === inputVideo.id);
+
+    if (index !== -1) {
+      this.db[index] = inputVideo;
+    }
   }
 
   getAll() {

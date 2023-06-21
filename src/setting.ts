@@ -15,7 +15,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("<h1>Hello</h1>");
 });
 
-app.delete("/all-data", (req: Request, res: Response) => {
+app.delete("/testing/all-data", (req: Request, res: Response) => {
   database.clearDB();
   res.sendStatus(204);
 });

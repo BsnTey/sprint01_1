@@ -3,7 +3,7 @@ import { createItemDB } from "../../types";
 export type CreateVideoDto = {
   title: string;
   author: string;
-  avaibleResolution?: string[];
+  availableResolutions?: string[];
 };
 
 type createItemDBOmitId = Omit<createItemDB, "id">;

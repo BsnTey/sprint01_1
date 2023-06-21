@@ -40,7 +40,7 @@ videosRoute.post("/", (req: RequestBody<CreateVideoDto>, res: Response) => {
       author: 20,
       title: 40,
     })
-    .isFieldsCorrectArray("avaibleResolution", availableResolutionsArray)
+    .isFieldsCorrectArray("availableResolutions", availableResolutionsArray)
     .getErrorArray();
   if (checkedArray.length !== 0) {
     res.json(checkedArray);
@@ -51,7 +51,7 @@ videosRoute.post("/", (req: RequestBody<CreateVideoDto>, res: Response) => {
   const currentDateString = currentDate.toISOString();
   currentDate.setDate(currentDate.getDate() + 1);
   const nextDay = currentDate.toISOString();
-  const availableResolutions = req.body.avaibleResolution ? req.body.avaibleResolution : ["P144"];
+  const availableResolutions = req.body.availableResolutions ? req.body.availableResolutions : ["P144"];
 
   const data = {
     id: Date.now(),

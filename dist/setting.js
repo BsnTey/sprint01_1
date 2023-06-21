@@ -15,7 +15,7 @@ exports.app.use("/videos", videosRoute_1.videosRoute);
 exports.app.get("/", (req, res) => {
     res.send("<h1>Hello</h1>");
 });
-exports.app.delete("/all-data", (req, res) => {
+exports.app.delete("/testing/all-data", (req, res) => {
     exports.database.clearDB();
     res.sendStatus(204);
 });

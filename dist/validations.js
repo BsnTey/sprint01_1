@@ -80,14 +80,26 @@ class ValidationDTO {
             for (const key of keys) {
                 const isNull = this.inputObj[key] === null;
                 const typeChecks = isNull ? (mayBeNull ? false : true) : this.inputObj[key] < objSchemaLength[key][0] || this.inputObj[key] > objSchemaLength[key][1];
-                if (!(key in this.errorStage.checkKeys) && key in this.inputObj && typeChecks) {
-                    this.errorStage.errorsMessages.push({
-                        message: `the field must have been between ${objSchemaLength[key][0]} and ${objSchemaLength[key][1]}`,
-                        field: key,
-                    });
-                    this.errorStage.checkKeys.push(key);
+                if (this.errorStage.checkKeys.includes(key)) {
+                    continue;
                 }
+                else if (!(key in this.inputObj && typeChecks)) {
+                    continue;
+                }
+                this.errorStage.errorsMessages.push({
+                    message: `the field must have been between ${objSchemaLength[key][0]} and ${objSchemaLength[key][1]}`,
+                    field: key,
+                });
+                this.errorStage.checkKeys.push(key);
             }
+            //   if (!(key in this.errorStage.checkKeys) && key in this.inputObj && typeChecks) {
+            //     this.errorStage.errorsMessages.push({
+            //       message: `the field must have been between ${objSchemaLength[key][0]} and ${objSchemaLength[key][1]}`,
+            //       field: key,
+            //     });
+            //     this.errorStage.checkKeys.push(key);
+            //   }
+            // }
             return this;
         };
         this.keysInputObj = this.getKeys(inputObj);

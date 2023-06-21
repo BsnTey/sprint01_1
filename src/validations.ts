@@ -6,7 +6,7 @@ export class ValidationDTO {
     this.keysInputObj = this.getKeys(inputObj);
     this.errorStage = {
       checkKeys: [],
-      errorArray: [],
+      errorsMessages: [],
     };
   }
 
@@ -20,13 +20,9 @@ export class ValidationDTO {
       const typeChecks = isNull ? (mayBeNull ? false : true) : typeof this.inputObj[key] !== typeCheck;
 
       if (!(key in this.errorStage.checkKeys) && key in this.inputObj && typeChecks) {
-        this.errorStage.errorArray.push({
-          errorsMessages: [
-            {
-              message: "the field is incorrect type",
-              field: key,
-            },
-          ],
+        this.errorStage.errorsMessages.push({
+          message: "the field is incorrect type",
+          field: key,
         });
         this.errorStage.checkKeys.push(key);
       }
@@ -34,19 +30,17 @@ export class ValidationDTO {
   };
 
   getErrorArray = () => {
-    return this.errorStage.errorArray;
+    return {
+      errorsMessages: this.errorStage.errorsMessages,
+    };
   };
 
   isNotNullable = (validationFiled: string[]) => {
     for (const key of validationFiled) {
       if (!(key in this.errorStage.checkKeys) && !(key in this.inputObj)) {
-        this.errorStage.errorArray.push({
-          errorsMessages: [
-            {
-              message: "the field is missing",
-              field: key,
-            },
-          ],
+        this.errorStage.errorsMessages.push({
+          message: "the field is missing",
+          field: key,
         });
         this.errorStage.checkKeys.push(key);
       }
@@ -73,13 +67,9 @@ export class ValidationDTO {
   isFieldsCorrectArray = (validationFiled: string, confirmType: string[]) => {
     if (!(validationFiled in this.errorStage.checkKeys) && validationFiled in this.inputObj) {
       if (!Array.isArray(this.inputObj[validationFiled]) || !this.inputObj[validationFiled].every((value: string) => confirmType.includes(value))) {
-        this.errorStage.errorArray.push({
-          errorsMessages: [
-            {
-              message: "the field is incorrect type",
-              field: validationFiled,
-            },
-          ],
+        this.errorStage.errorsMessages.push({
+          message: "the field is incorrect type",
+          field: validationFiled,
         });
         this.errorStage.checkKeys.push(validationFiled);
       }
@@ -92,13 +82,9 @@ export class ValidationDTO {
     const keys = this.getKeys(objSchemaLength);
     for (const key of keys) {
       if (key in this.errorStage.checkKeys && key in this.inputObj && this.inputObj[key].length > objSchemaLength[key]) {
-        this.errorStage.errorArray.push({
-          errorsMessages: [
-            {
-              message: `the field must have a length less than ${objSchemaLength[key]}`,
-              field: key,
-            },
-          ],
+        this.errorStage.errorsMessages.push({
+          message: `the field must have a length less than ${objSchemaLength[key]}`,
+          field: key,
         });
         this.errorStage.checkKeys.push(key);
       }
@@ -115,13 +101,9 @@ export class ValidationDTO {
       const typeChecks = isNull ? (mayBeNull ? false : true) : this.inputObj[key] < objSchemaLength[key][0] || this.inputObj[key] > objSchemaLength[key][1];
 
       if (!(key in this.errorStage.checkKeys) && key in this.inputObj && typeChecks) {
-        this.errorStage.errorArray.push({
-          errorsMessages: [
-            {
-              message: `the field must have been between ${objSchemaLength[key][0]} and ${objSchemaLength[key][1]}`,
-              field: key,
-            },
-          ],
+        this.errorStage.errorsMessages.push({
+          message: `the field must have been between ${objSchemaLength[key][0]} and ${objSchemaLength[key][1]}`,
+          field: key,
         });
         this.errorStage.checkKeys.push(key);
       }

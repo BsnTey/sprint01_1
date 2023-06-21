@@ -33,7 +33,7 @@ videosRoute.get("/:id", (req: Request, res: Response) => {
 videosRoute.post("/", (req: RequestBody<CreateVideoDto>, res: Response) => {
   const checker = new ValidationDTO(req.body);
 
-  const checkedArray = checker
+  const checkedError = checker
     .isNotNullable(["author", "title"])
     .isString(["author", "title"])
     .isMaxLength({
@@ -42,8 +42,9 @@ videosRoute.post("/", (req: RequestBody<CreateVideoDto>, res: Response) => {
     })
     .isFieldsCorrectArray("availableResolutions", availableResolutionsArray)
     .getErrorArray();
-  if (checkedArray.length !== 0) {
-    res.json(checkedArray);
+
+  if (checkedError.errorsMessages !== 0) {
+    res.status(400).json(checkedError);
     return;
   }
 
@@ -85,7 +86,7 @@ videosRoute.put("/:id", (req: RequestBody<RequestItemVideoDTO>, res: Response) =
 
   const checker = new ValidationDTO(req.body);
 
-  const checkedArray = checker
+  const checkedError = checker
     .isNotNullable(["author", "title"])
     .isString(["author", "title"])
     .isMaxLength({
@@ -103,8 +104,8 @@ videosRoute.put("/:id", (req: RequestBody<RequestItemVideoDTO>, res: Response) =
     )
     .getErrorArray();
 
-  if (checkedArray.length !== 0) {
-    res.status(400).json(checkedArray);
+  if (checkedError.errorsMessages !== 0) {
+    res.status(400).json(checkedError);
     return;
   }
 
@@ -119,8 +120,8 @@ videosRoute.put("/:id", (req: RequestBody<RequestItemVideoDTO>, res: Response) =
     availableResolutions: availableResolutions,
     canBeDownloaded: req.body.canBeDownloaded,
     minAgeRestriction: req.body.minAgeRestriction,
-    createdAt: currentDateString,
-    publicationDate: currentDateString,
+    createdAt: req.body.createdAt,
+    publicationDate: req.body.publicationDate,
   };
 
   database.replace(data);

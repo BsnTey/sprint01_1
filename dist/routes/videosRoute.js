@@ -25,7 +25,7 @@ exports.videosRoute.get("/:id", (req, res) => {
 });
 exports.videosRoute.post("/", (req, res) => {
     const checker = new validations_1.ValidationDTO(req.body);
-    const checkedArray = checker
+    const checkedError = checker
         .isNotNullable(["author", "title"])
         .isString(["author", "title"])
         .isMaxLength({
@@ -34,8 +34,8 @@ exports.videosRoute.post("/", (req, res) => {
     })
         .isFieldsCorrectArray("availableResolutions", availableResolutionsArray)
         .getErrorArray();
-    if (checkedArray.length !== 0) {
-        res.json(checkedArray);
+    if (checkedError.errorsMessages !== 0) {
+        res.status(400).json(checkedError);
         return;
     }
     const currentDate = new Date();
@@ -68,7 +68,7 @@ exports.videosRoute.put("/:id", (req, res) => {
         return;
     }
     const checker = new validations_1.ValidationDTO(req.body);
-    const checkedArray = checker
+    const checkedError = checker
         .isNotNullable(["author", "title"])
         .isString(["author", "title"])
         .isMaxLength({
@@ -82,8 +82,8 @@ exports.videosRoute.put("/:id", (req, res) => {
         minAgeRestriction: [1, 18],
     }, true)
         .getErrorArray();
-    if (checkedArray.length !== 0) {
-        res.status(400).json(checkedArray);
+    if (checkedError.errorsMessages !== 0) {
+        res.status(400).json(checkedError);
         return;
     }
     const currentDate = new Date();
@@ -96,8 +96,8 @@ exports.videosRoute.put("/:id", (req, res) => {
         availableResolutions: availableResolutions,
         canBeDownloaded: req.body.canBeDownloaded,
         minAgeRestriction: req.body.minAgeRestriction,
-        createdAt: currentDateString,
-        publicationDate: currentDateString,
+        createdAt: req.body.createdAt,
+        publicationDate: req.body.publicationDate,
     };
     setting_1.database.replace(data);
     res.sendStatus(204);

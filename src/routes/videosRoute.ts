@@ -102,6 +102,7 @@ videosRoute.put("/:id", (req: RequestBody<RequestItemVideoDTO>, res: Response) =
       },
       true
     )
+    .isValidISODate(["publicationDate"])
     .getErrorArray();
 
   if (checkedError.errorsMessages.length !== 0) {
@@ -120,7 +121,7 @@ videosRoute.put("/:id", (req: RequestBody<RequestItemVideoDTO>, res: Response) =
     availableResolutions: availableResolutions,
     canBeDownloaded: req.body.canBeDownloaded,
     minAgeRestriction: req.body.minAgeRestriction,
-    createdAt: req.body.createdAt || new Date().toISOString(),
+    createdAt: data.createdAt,
     publicationDate: req.body.publicationDate,
   };
 

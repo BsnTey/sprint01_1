@@ -81,6 +81,7 @@ exports.videosRoute.put("/:id", (req, res) => {
         .isMinMax({
         minAgeRestriction: [1, 18],
     }, true)
+        .isValidISODate(["publicationDate"])
         .getErrorArray();
     if (checkedError.errorsMessages.length !== 0) {
         res.status(400).json(checkedError);
@@ -96,7 +97,7 @@ exports.videosRoute.put("/:id", (req, res) => {
         availableResolutions: availableResolutions,
         canBeDownloaded: req.body.canBeDownloaded,
         minAgeRestriction: req.body.minAgeRestriction,
-        createdAt: req.body.createdAt || new Date().toISOString(),
+        createdAt: data.createdAt,
         publicationDate: req.body.publicationDate,
     };
     setting_1.database.replace(data);

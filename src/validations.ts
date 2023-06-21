@@ -114,16 +114,33 @@ export class ValidationDTO {
       this.errorStage.checkKeys.push(key);
     }
 
-    //   if (!(key in this.errorStage.checkKeys) && key in this.inputObj && typeChecks) {
-
-    //     this.errorStage.errorsMessages.push({
-    //       message: `the field must have been between ${objSchemaLength[key][0]} and ${objSchemaLength[key][1]}`,
-    //       field: key,
-    //     });
-    //     this.errorStage.checkKeys.push(key);
-    //   }
-    // }
-
     return this;
   };
+
+  isValidISODate = (validationFiled: string[]) => {
+    for (const key of validationFiled) {
+      let date = new Date(this.inputObj[key]);
+
+      if (!(date instanceof Date && !isNaN(date.getTime()))) {
+        this.errorStage.errorsMessages.push({
+          message: "the field is incorrect type",
+          field: key,
+        });
+        this.errorStage.checkKeys.push(key);
+      }
+    }
+    return this;
+  };
+
+  // for (const key of validationFiled) {
+  //   const isNull = this.inputObj[key] === null;
+  //   const typeChecks = isNull ? (mayBeNull ? false : true) : typeof this.inputObj[key] !== typeCheck;
+
+  //   if (!(key in this.errorStage.checkKeys) && key in this.inputObj && typeChecks) {
+  //     this.errorStage.errorsMessages.push({
+  //       message: "the field is incorrect type",
+  //       field: key,
+  //     });
+  //     this.errorStage.checkKeys.push(key);
+  //   }
 }

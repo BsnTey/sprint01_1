@@ -121,7 +121,7 @@ videosRoute.put("/:id", (req: RequestBody<RequestItemVideoDTO>, res: Response) =
     availableResolutions: availableResolutions,
     canBeDownloaded: req.body.canBeDownloaded,
     minAgeRestriction: req.body.minAgeRestriction,
-    createdAt: req.body.createdAt,
+    createdAt: req.body.createdAt || new Date().toISOString(),
     publicationDate: req.body.publicationDate,
   };
 

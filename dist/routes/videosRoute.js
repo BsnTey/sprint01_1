@@ -34,7 +34,8 @@ exports.videosRoute.post("/", (req, res) => {
     })
         .isFieldsCorrectArray("availableResolutions", availableResolutionsArray)
         .getErrorArray();
-    if (checkedError.errorsMessages !== 0) {
+    if (checkedError.errorsMessages.length !== 0) {
+        console.log(checkedError.errorsMessages);
         res.status(400).json(checkedError);
         return;
     }
@@ -82,7 +83,7 @@ exports.videosRoute.put("/:id", (req, res) => {
         minAgeRestriction: [1, 18],
     }, true)
         .getErrorArray();
-    if (checkedError.errorsMessages !== 0) {
+    if (checkedError.errorsMessages.length !== 0) {
         res.status(400).json(checkedError);
         return;
     }

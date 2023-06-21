@@ -43,7 +43,8 @@ videosRoute.post("/", (req: RequestBody<CreateVideoDto>, res: Response) => {
     .isFieldsCorrectArray("availableResolutions", availableResolutionsArray)
     .getErrorArray();
 
-  if (checkedError.errorsMessages !== 0) {
+  if (checkedError.errorsMessages.length !== 0) {
+    console.log(checkedError.errorsMessages);
     res.status(400).json(checkedError);
     return;
   }
@@ -104,7 +105,7 @@ videosRoute.put("/:id", (req: RequestBody<RequestItemVideoDTO>, res: Response) =
     )
     .getErrorArray();
 
-  if (checkedError.errorsMessages !== 0) {
+  if (checkedError.errorsMessages.length !== 0) {
     res.status(400).json(checkedError);
     return;
   }

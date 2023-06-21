@@ -81,13 +81,16 @@ export class ValidationDTO {
   isMaxLength = (objSchemaLength: Record<string, number>) => {
     const keys = this.getKeys(objSchemaLength);
     for (const key of keys) {
-      if (!(key in this.errorStage.checkKeys) && key in this.inputObj && this.inputObj[key].length > objSchemaLength[key]) {
-        this.errorStage.errorsMessages.push({
-          message: `the field must have a length less than ${objSchemaLength[key]}`,
-          field: key,
-        });
-        this.errorStage.checkKeys.push(key);
+      if (this.errorStage.checkKeys.includes(key)) {
+        continue;
+      } else if (!(key in this.inputObj && this.inputObj[key].length > objSchemaLength[key])) {
+        continue;
       }
+      this.errorStage.errorsMessages.push({
+        message: `the field must have a length less than ${objSchemaLength[key]}`,
+        field: key,
+      });
+      this.errorStage.checkKeys.push(key);
     }
 
     return this;

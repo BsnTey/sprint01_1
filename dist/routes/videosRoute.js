@@ -35,7 +35,6 @@ exports.videosRoute.post("/", (req, res) => {
         .isFieldsCorrectArray("availableResolutions", availableResolutionsArray)
         .getErrorArray();
     if (checkedError.errorsMessages.length !== 0) {
-        console.log(checkedError.errorsMessages);
         res.status(400).json(checkedError);
         return;
     }
